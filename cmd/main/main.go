@@ -3,7 +3,8 @@ package main
 import (
 	"fmt"
 
-	"github.com/dsrosen6/addigy-command/internal/addigy"
+	"github.com/dsrosen6/addigy-command/internal/cli"
+	"github.com/dsrosen6/addigy-command/pkg/addigy"
 )
 
 func main() {
@@ -11,4 +12,6 @@ func main() {
 		fmt.Println("Error:", err)
 		return
 	}
+
+	cli.Run()
 }
