@@ -117,7 +117,7 @@ func runCommandMenu() error {
 					case "run-v":
 						return "Start the Addigy policy run.\nRuns with full verbose output.\n"
 					case "reset":
-						return "Reset the progress of all Addigy policy items.\nUse this if you need to flush the progress of all policy items, but time is not of the essence.\n"
+						return "Reset the progress of all Addigy policy items.\nUse this if you need to flush the progress of all policy items.\n"
 					case "reset-run":
 						return "Reset the Addigy policy progress, and run the policy.\nPolicy will run without a spinner.\n"
 					case "reset-run-s":
