@@ -61,8 +61,13 @@ func PolicierRun() error {
 
 // ResetPolicyProgress resets all policy progress by deleting the status.json file. Next time the policy runs, it'll create a new status.json file.
 func ResetPolicyProgress() error {
-	if err := os.Remove(statusPath); err != nil {
-		return fmt.Errorf("could not reset policy progress\nOutput:%w", err)
+	err := os.Remove(statusPath)
+	if err != nil {
+		if os.IsNotExist(err) {
+			fmt.Println("No policy progress to reset.")
+			return nil
+		}
+		return fmt.Errorf("could not reset policy progress: %w", err)
 	}
 	fmt.Println("Successfully reset policy progress.")
 	return nil
