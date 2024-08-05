@@ -13,5 +13,7 @@ func main() {
 		return
 	}
 
-	cli.Run()
+	if err := cli.Run(); err != nil {
+		fmt.Println("Error:", err)
+	}
 }

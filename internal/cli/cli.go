@@ -13,24 +13,34 @@ var usage = `
 Usage: addigy [command]
 
 Commands:
-  run           Run the Addigy policy. Without arguments, this will start the policy with no progress spinner.
-  				Arguments:
-				-s      Run the Addigy policy with a progress spinner, which stops when the policy run is complete.
-				-v	    Run the Addigy policy with full verbose output.
+  run           
+	Run the Addigy policy. Without arguments, this will start the policy with no progress spinner.
+	Optional Flags:
+	-s, --spinner:
+		Run the Addigy policy with a progress spinner, which stops when the policy run is complete.
+	-v, --verbose:
+		Run the Addigy policy with full verbose output.
 				 
   reset       Reset the progress of all Addigy policy items. Use as a "flush" if you need to reset the progress of all policy items, but time is not of the essence.
 
-  full-reset  Reset the Addigy policy progress (reset), and run the policy (run). Policy will run without a spinner.
-				-s	  Policy will run with a progress spinner (run -f).
-				-v	  Policy will run with full verbose output (run -v).
+  full-reset  
+	Reset the Addigy policy progress (reset), and run the policy (run). Policy will run without a spinner.
+	Optional Flags:				
+	-s, --spinner
+		Policy will run with a progress spinner (run -f).
+	-v, --verbose	  
+		Policy will run with full verbose output (run -v).
 
-  help        Show this help message.
+  -h, --help, help        
+		Show this help message.
 `
 
 func Run() error {
 	// if there are any args on top of the binary name, process them
 	if len(os.Args) > 1 {
-		processArgs()
+		if err := processArgs(); err != nil {
+			return err
+		}
 		return nil
 	} else {
 		return runCommandMenu()
@@ -43,15 +53,15 @@ func processArgs() error {
 	case "run":
 		if len(os.Args) > 2 {
 			switch os.Args[2] {
-			case "-s":
+			case "-s", "--spinner":
 				return addigy.PolicierRunWithSpinner()
-			case "-v":
+			case "-v", "--verbose":
 				return addigy.PolicierRunVerbose()
 			default:
 				return errors.New("invalid argument - use 'addigy help' for usage")
 			}
 		} else {
-			addigy.PolicierRun()
+			return addigy.PolicierRun()
 		}
 
 	case "reset":
@@ -60,22 +70,22 @@ func processArgs() error {
 	case "full-reset":
 		if len(os.Args) > 2 {
 			switch os.Args[2] {
-			case "-s":
-				return FullResetSpinner()
-			case "-v":
-				return FullResetVerbose()
+			case "-s, --spinner":
+				return fullResetSpinner()
+			case "-v, --verbose":
+				return fullResetVerbose()
 			default:
 				return errors.New("invalid argument - use 'addigy help' for usage")
 			}
 		} else {
-			return FullReset()
+			return fullReset()
 		}
 
-	case "help":
+	case "-h", "--help", "help":
 		fmt.Println(usage)
 
 	default:
-		fmt.Println("Invalid command. Use 'addigy help' for usage.")
+		return errors.New("invalid command - use 'addigy help' for usage")
 	}
 
 	return nil
@@ -87,7 +97,7 @@ func runCommandMenu() error {
 		huh.NewGroup(
 			huh.NewSelect[string]().
 				Value(&selection).
-				Height(8).
+				Height(10).
 				Title("Command Description").
 				Options(
 					huh.NewOption("Run Policy", "run"),
@@ -121,7 +131,7 @@ func runCommandMenu() error {
 		),
 	)
 
-	if err := form.Run(); err != nil {
+	if err := form.WithTheme(huh.ThemeBase16()).Run(); err != nil {
 		return err
 	}
 
@@ -135,17 +145,17 @@ func runCommandMenu() error {
 	case "reset":
 		return addigy.ResetPolicyProgress()
 	case "reset-run":
-		return FullReset()
+		return fullReset()
 	case "reset-run-s":
-		return FullResetSpinner()
+		return fullResetSpinner()
 	case "reset-run-v":
-		return FullResetVerbose()
+		return fullResetVerbose()
 	default:
 		return nil
 	}
 }
 
-func FullReset() error {
+func fullReset() error {
 	err := addigy.ResetPolicyProgress()
 	if err != nil {
 		return err
@@ -153,7 +163,7 @@ func FullReset() error {
 	return addigy.PolicierRun()
 }
 
-func FullResetSpinner() error {
+func fullResetSpinner() error {
 	err := addigy.ResetPolicyProgress()
 	if err != nil {
 		return err
@@ -161,7 +171,7 @@ func FullResetSpinner() error {
 	return addigy.PolicierRunWithSpinner()
 }
 
-func FullResetVerbose() error {
+func fullResetVerbose() error {
 	err := addigy.ResetPolicyProgress()
 	if err != nil {
 		return err
