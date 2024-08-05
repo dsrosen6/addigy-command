@@ -13,7 +13,7 @@ var usage = `
 Usage: addigy [command]
 
 Commands:
-  run           
+  addigy run           
 	Run the Addigy policy. Without arguments, this will start the policy with no progress spinner.
 	Optional Flags:
 	-s, --spinner:
@@ -21,9 +21,9 @@ Commands:
 	-v, --verbose:
 		Run the Addigy policy with full verbose output.
 				 
-  reset       Reset the progress of all Addigy policy items. Use as a "flush" if you need to reset the progress of all policy items, but time is not of the essence.
+  addigy reset       Reset the progress of all Addigy policy items. Use as a "flush" if you need to reset the progress of all policy items, but time is not of the essence.
 
-  full-reset  
+  addigy full-reset  
 	Reset the Addigy policy progress (reset), and run the policy (run). Policy will run without a spinner.
 	Optional Flags:				
 	-s, --spinner
