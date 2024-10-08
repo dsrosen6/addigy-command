@@ -12,29 +12,18 @@ import (
 var usage = `
 Usage: addigy [command]
 
-Commands:
-addigy run: 
-Run the Addigy policy. Without arguments, this will start the policy with no progress spinner.
-	Optional Flags:
-	-s, --spinner:
-	Run the Addigy policy with a progress spinner, which stops when the policy run is complete.
-	-v, --verbose:
-	Run the Addigy policy with full verbose output.
+run: Run the Addigy policy (starts with no further output)
+	-s, --spinner: Run the Addigy policy with a progress spinner
+	-v, --verbose: Run the Addigy policy with full verbose output
 				 
-addigy reset: 
-Reset the progress of all Addigy policy items. 
-Use as a "flush" if you need to reset the progress of all policy items, but time is not of the essence.       
+addigy reset: Reset the progress of all Addigy policy items
 
-addigy full-reset  
-Reset the Addigy policy progress (reset), and run the policy (run). Policy will run without a spinner.
-	Optional Flags:				
-	-s, --spinner
-		Policy will run with a progress spinner (run -f).
-	-v, --verbose	  
-		Policy will run with full verbose output (run -v).
+addigy full-reset: Runs "reset" and "run" in sequence		
+	-s, --spinner: Policy will run with a progress spinner (run -s)
+	-v, --verbose: Policy will run with full verbose output (run -v)
 
-	-h, --help, help        
-		Show this help message.
+addigy help: Show this help message
+	-h, --help
 `
 
 func Run() error {
