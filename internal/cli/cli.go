@@ -72,9 +72,9 @@ func processArgs() error {
 	case "full-reset":
 		if len(os.Args) > 2 {
 			switch os.Args[2] {
-			case "-s, --spinner":
+			case "-s", "--spinner":
 				return fullResetSpinner()
-			case "-v, --verbose":
+			case "-v", "--verbose":
 				return fullResetVerbose()
 			default:
 				return errors.New("invalid argument - use 'addigy help' for usage")
